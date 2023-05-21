@@ -12,7 +12,8 @@ defmodule Doumi.Port.MixProject do
       name: "Doumi.Port",
       description: "A helper library that facilitates the usage of Python in Elixir.",
       deps: deps(),
-      package: package()
+      package: package(),
+      docs: docs()
     ]
   end
 
@@ -28,7 +29,8 @@ defmodule Doumi.Port.MixProject do
     [
       # https://github.com/erlport/erlport/pull/13
       {:erlport, github: "nallwhy/erlport", ref: "6f5cb45"},
-      {:nimble_pool, "~> 1.0"}
+      {:nimble_pool, "~> 1.0"},
+      {:ex_doc, "~> 0.29", only: :docs}
     ]
   end
 
@@ -38,6 +40,18 @@ defmodule Doumi.Port.MixProject do
       maintainers: ["Jinkyou Son(nallwhy@gmail.com)"],
       files: ~w(lib mix.exs README.md LICENSE.md),
       links: %{"GitHub" => @source_url}
+    ]
+  end
+
+  defp docs do
+    [
+      main: "readme",
+      source_ref: "v#{@version}",
+      source_url: @source_url,
+      extras: [
+        "README.md": [title: "Overview"],
+        "LICENSE.md": [title: "License"]
+      ]
     ]
   end
 end
