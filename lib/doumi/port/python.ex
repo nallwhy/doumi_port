@@ -1,35 +1,43 @@
 defmodule Doumi.Port.Python do
-  @type name() :: {:global, atom()} | {:via, atom(), atom()} | atom()
-  @type start_result() :: {:ok, pid()} | {:error, term}
-  @type instance() :: pid() | name()
+  @type name() :: Doumi.Port.name()
+  @type instance() :: Doumi.Port.instance()
+  @type start_result() :: Doumi.Port.start_result()
+
+  @behaviour Doumi.Port
 
   alias Doumi.Port.Util
 
+  @impl Doumi.Port
   @spec start(opts :: list()) :: start_result()
   def start(opts \\ []) when is_list(opts) do
     :python.start(Util.convert_options(opts))
   end
 
+  @impl Doumi.Port
   @spec start(name :: name(), opts :: list()) :: start_result()
   def start(name, opts) when is_list(opts) do
     :python.start(maybe_wrap_local_name(name), Util.convert_options(opts))
   end
 
+  @impl Doumi.Port
   @spec start_link(opts :: list()) :: start_result()
   def start_link(opts \\ []) when is_list(opts) do
     :python.start_link(Util.convert_options(opts))
   end
 
+  @impl Doumi.Port
   @spec start_link(name :: name(), opts :: list()) :: start_result()
   def start_link(name, opts) when is_list(opts) do
     :python.start_link(maybe_wrap_local_name(name), Util.convert_options(opts))
   end
 
+  @impl Doumi.Port
   @spec stop(instance :: instance()) :: :ok
   def stop(instance) do
     :python.stop(instance)
   end
 
+  @impl Doumi.Port
   @spec call(
           instance :: instance(),
           module :: atom(),
