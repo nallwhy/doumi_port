@@ -1,13 +1,18 @@
 defmodule Doumi.Port.MixProject do
   use Mix.Project
 
+  @source_url "https://github.com/nallwhy/doumi_port"
+  @version "0.1.0"
+
   def project do
     [
       app: :doumi_port,
-      version: "0.1.0",
-      elixir: "~> 1.14",
-      start_permanent: Mix.env() == :prod,
-      deps: deps()
+      version: @version,
+      elixir: "~> 1.7",
+      name: "Doumi.Port",
+      description: "A helper library that facilitates the usage of Python in Elixir.",
+      deps: deps(),
+      package: package()
     ]
   end
 
@@ -24,6 +29,15 @@ defmodule Doumi.Port.MixProject do
       # https://github.com/erlport/erlport/pull/13
       {:erlport, github: "nallwhy/erlport", ref: "6f5cb45"},
       {:nimble_pool, "~> 1.0"}
+    ]
+  end
+
+  defp package do
+    [
+      licenses: ["MIT"],
+      maintainers: ["Jinkyou Son(nallwhy@gmail.com)"],
+      files: ~w(lib mix.exs README.md LICENSE.md),
+      links: %{"GitHub" => @source_url}
     ]
   end
 end
