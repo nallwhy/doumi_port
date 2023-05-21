@@ -64,6 +64,7 @@ end
 
 ## TODO
 
+- [ ] Support use macro
 - [ ] Support Ruby
 - [ ] Support mix tasks that help setup Python, Ruby in applications
 
