@@ -1,0 +1,3 @@
+%{
+  "erlport": {:git, "https://github.com/nallwhy/erlport.git", "6f5cb45e8f7e9171d20325891219e187312f055a", [ref: "6f5cb45"]},
+}
