@@ -27,8 +27,7 @@ defmodule Doumi.Port.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      # https://github.com/erlport/erlport/pull/13
-      {:erlport, github: "nallwhy/erlport", ref: "6f5cb45"},
+      {:erlport, "~> 0.10"},
       {:nimble_pool, "~> 1.0"},
       {:ex_doc, "~> 0.29", only: :docs}
     ]
