@@ -1,3 +1,4 @@
 %{
   "erlport": {:git, "https://github.com/nallwhy/erlport.git", "6f5cb45e8f7e9171d20325891219e187312f055a", [ref: "6f5cb45"]},
+  "nimble_pool": {:hex, :nimble_pool, "1.0.0", "5eb82705d138f4dd4423f69ceb19ac667b3b492ae570c9f5c900bb3d2f50a847", [:mix], [], "hexpm", "80be3b882d2d351882256087078e1b1952a28bf98d0a287be87e4a24a710b67a"},
 }

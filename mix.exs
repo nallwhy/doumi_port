@@ -22,7 +22,8 @@ defmodule Doumi.Port.MixProject do
   defp deps do
     [
       # https://github.com/erlport/erlport/pull/13
-      {:erlport, github: "nallwhy/erlport", ref: "6f5cb45"}
+      {:erlport, github: "nallwhy/erlport", ref: "6f5cb45"},
+      {:nimble_pool, "~> 1.0"}
     ]
   end
 end
