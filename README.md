@@ -26,6 +26,10 @@ https://github.com/dashbitco/nimble_pool#nimblepool
 ## Usage
 
 ```elixir
+defmodule MyApp.PythonPool do
+  use Doumi.Port.Pool, port: {Doumi.Port.Python, python_path: [...]}
+end
+
 defmodule MyApp.Application do
   ...
 
@@ -33,7 +37,7 @@ defmodule MyApp.Application do
   def start(_type, _args) do
     children = [
       ...
-      {Doumi.Port.Pool, port: {Doumi.Port.Python, python_path: [...]}, name: MyApp.PythonPool}
+      MyApp.PythonPool
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one, name: MyApp.Supervisor)
@@ -42,7 +46,7 @@ end
 
 defmodule MyApp.Native do
   def add(a, b) do
-    Doumi.Port.Pool.command(MyApp.PythonPool, :operator, :add, [a, b])
+    MyApp.PythonPool.command(:operator, :add, [a, b])
   end
 end
 ```
@@ -64,7 +68,7 @@ end
 
 ## TODO
 
-- [ ] Support use macro
+- [x] Support use macro
 - [ ] Support Ruby
 - [ ] Support mix tasks that help setup Python, Ruby in applications
 
