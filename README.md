@@ -7,7 +7,7 @@
 
 <!-- MDOC !-->
 
-`Doumi.Port` is a helper library that facilitates the usage of Python in Elixir powered by [Erlport](https://github.com/erlport/erlport), [NimblePool](https://github.com/dashbitco/nimble_pool).
+`Doumi.Port` is a helper library that makes it easier to use Python, Ruby in Elixir powered by [Erlport](https://github.com/erlport/erlport), [NimblePool](https://github.com/dashbitco/nimble_pool).
 
 **도우미(Doumi)** means "helper" in Korean.
 
@@ -69,7 +69,7 @@ end
 ## TODO
 
 - [x] Support use macro
-- [ ] Support Ruby
+- [x] Support Ruby
 - [ ] Support mix tasks that help setup Python, Ruby in applications
 
 <!-- MDOC !-->
