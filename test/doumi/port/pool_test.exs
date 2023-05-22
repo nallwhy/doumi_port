@@ -23,7 +23,7 @@ defmodule Doumi.Port.PoolTest do
   end
 
   defmodule TestPool do
-    use Doumi.Port.Pool, port: Python
+    use Doumi.Port.Pool, port: {Python, python_path: ["#{__DIR__}/../../support/python"]}
   end
 
   test "__using__/1" do
@@ -31,6 +31,6 @@ defmodule Doumi.Port.PoolTest do
 
     assert {:ok, _pid} = Supervisor.start_link(children, strategy: :one_for_one)
 
-    assert TestPool.command(:operator, :add, [1, 2]) == 3
+    assert TestPool.command(:test, :hello, []) == "world"
   end
 end
