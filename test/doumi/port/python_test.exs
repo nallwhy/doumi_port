@@ -23,6 +23,7 @@ defmodule Doumi.Port.PythonTest do
       {:ok, pid} = Python.start(name, [])
       assert {:error, {:already_started, ^pid}} = Python.start(name, [])
       assert Process.alive?(pid) == true
+      assert :ok = Python.stop(name)
     end
   end
 
@@ -47,6 +48,7 @@ defmodule Doumi.Port.PythonTest do
       {:ok, pid} = Python.start_link(name, [])
       assert {:error, {:already_started, ^pid}} = Python.start_link(name, [])
       assert Process.alive?(pid) == true
+      assert :ok = Python.stop(name)
     end
   end
 end
