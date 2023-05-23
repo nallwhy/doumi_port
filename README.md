@@ -103,7 +103,7 @@ The package can be installed by adding `doumi_port` to your list of dependencies
 ```elixir
 def deps do
   [
-    {:doumi_port, "~> 0.3.0"},
+    {:doumi_port, "~> 0.4.0"},
     # To support Python >= 3.11, erlport should be overridden
     # https://github.com/erlport/erlport/pull/13
     {:erlport, github: "nallwhy/erlport", ref: "6f5cb45", override: true}
