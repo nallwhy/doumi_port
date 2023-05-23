@@ -25,9 +25,19 @@ https://github.com/dashbitco/nimble_pool#nimblepool
 
 ## Usage
 
+### Call Python function via Pool
+
 ```elixir
 defmodule MyApp.PythonPool do
-  use Doumi.Port.Pool, port: {Doumi.Port.Python, python_path: [...]}
+  use Doumi.Port.Pool,
+    port: {
+      Doumi.Port.Python,
+      python_path: [
+        [:code.priv_dir(:my_app), "python"] |> Path.join(),
+        [:code.priv_dir(:my_app), "python", "lib"] |> Path.join()
+      ]
+    },
+    pool_size: 4
 end
 
 defmodule MyApp.Application do
@@ -51,6 +61,41 @@ defmodule MyApp.Native do
 end
 ```
 
+### Init and Setup Python in Elixir application
+
+```shell
+# Create requirements.txt, .gitignores to ./priv/python
+mix doumi.port.init --port python
+
+# Add Python dependency
+echo "pypdf2==3.0.1" >> ./priv/python/requirements.txt
+
+# Install Python dependecies
+mix doumi.port.setup --port python
+```
+
+You can install Python dependencies to your release with `mix doumi.port.setup`.
+
+```elixir
+defmodule MyApp.MixProject do
+  defp aliases do
+    [
+      ...,
+      "release.setup": ["doumi.port.setup --port python", ...]
+    ]
+  end
+end
+```
+
+```dockerfile
+...
+
+# release setup (ex. install Python dependencies, compile assets)
+RUN mix release.setup
+
+...
+```
+
 ## Installation
 
 The package can be installed by adding `doumi_port` to your list of dependencies in `mix.exs`:
@@ -70,7 +115,8 @@ end
 
 - [x] Support use macro
 - [x] Support Ruby
-- [ ] Support mix tasks that help setup Python, Ruby in applications
+- [x] Support mix tasks that help setup Python in applications
+- [ ] Support mix tasks that help setup Ruby in applications
 
 <!-- MDOC !-->
 
