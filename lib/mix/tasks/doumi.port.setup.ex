@@ -5,7 +5,8 @@ defmodule Mix.Tasks.Doumi.Port.Setup do
 
   @switchs [
     port: :string,
-    path: :string
+    path: :string,
+    pip: :string
   ]
 
   @impl Mix.Task
@@ -21,7 +22,9 @@ defmodule Mix.Tasks.Doumi.Port.Setup do
 
     case port do
       "python" ->
-        System.cmd("pip", ~w(install -r requirements.txt -t ./lib), cd: path)
+        pip = Keyword.get(opts, :pip, "pip3")
+
+        System.cmd(pip, ~w(install -r requirements.txt -t ./lib), cd: path)
     end
 
     :ok
