@@ -25,6 +25,9 @@ defmodule Mix.Tasks.Doumi.Port.Setup do
         pip = Keyword.get(opts, :pip, "pip3")
 
         System.cmd(pip, ~w(install -r requirements.txt -t ./lib), cd: path)
+
+      "ruby" ->
+        System.cmd("bundle", ~w(install --path ./lib), cd: path)
     end
 
     :ok
@@ -40,11 +43,11 @@ defmodule Mix.Tasks.Doumi.Port.Setup do
   end
 
   defp valid_port!(args) do
-    if args not in ["python"] do
+    if args not in ["python", "ruby"] do
       Mix.raise("""
-      Port(python) should be provided.
+      Port(python, ruby) should be provided.
 
-      ex) mix doumi.port.setup python
+      ex) mix doumi.port.setup --port python
       """)
     end
   end

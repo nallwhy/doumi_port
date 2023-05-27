@@ -36,6 +36,29 @@ defmodule Mix.Tasks.Doumi.Port.Init do
           __pycache__
           """)
         end
+
+      "ruby" ->
+        gemfile_path = "#{path}/Gemfile"
+        gemfile_lock_path = "#{path}/Gemfile.lock"
+        gitignore_path = "#{path}/.gitignore"
+
+        if !File.exists?(gemfile_path) do
+          File.write!(gemfile_path, """
+          source 'https://rubygems.org'
+
+          """)
+        end
+
+        if !File.exists?(gemfile_lock_path) do
+          File.touch!(gemfile_lock_path)
+        end
+
+        if !File.exists?(gitignore_path) do
+          File.write!(gitignore_path, """
+          lib
+          .bundle
+          """)
+        end
     end
 
     :ok
@@ -51,9 +74,9 @@ defmodule Mix.Tasks.Doumi.Port.Init do
   end
 
   defp valid_port!(args) do
-    if args not in ["python"] do
+    if args not in ["python", "ruby"] do
       Mix.raise("""
-      Port(python) should be provided.
+      Port(python, ruby) should be provided.
 
       ex) mix doumi.port.setup --port python
       """)
