@@ -11,14 +11,14 @@ defmodule Mix.Tasks.Doumi.Port.Setup do
 
   @impl Mix.Task
   def run(args) do
-    no_umbrella!()
+    Mix.Doumi.Port.no_umbrella!()
 
     {opts, _, _} = OptionParser.parse(args, strict: @switchs)
 
     port = Keyword.get(opts, :port)
     path = Keyword.get(opts, :path, "priv/#{port}")
 
-    valid_port!(port)
+    Mix.Doumi.Port.valid_port!(port, "ex) mix doumi.port.setup --port python")
 
     case port do
       "python" ->
@@ -31,24 +31,5 @@ defmodule Mix.Tasks.Doumi.Port.Setup do
     end
 
     :ok
-  end
-
-  defp no_umbrella!() do
-    if Mix.Project.umbrella?() do
-      Mix.raise(
-        "Cannot run task doumi.port.setup from umbrella project root. " <>
-          "Change directory to one of the umbrella applications and try again"
-      )
-    end
-  end
-
-  defp valid_port!(args) do
-    if args not in ["python", "ruby"] do
-      Mix.raise("""
-      Port(python, ruby) should be provided.
-
-      ex) mix doumi.port.setup --port python
-      """)
-    end
   end
 end

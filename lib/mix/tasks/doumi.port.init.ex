@@ -10,76 +10,57 @@ defmodule Mix.Tasks.Doumi.Port.Init do
 
   @impl Mix.Task
   def run(args) do
-    no_umbrella!()
+    Mix.Doumi.Port.no_umbrella!()
 
     {opts, _, _} = OptionParser.parse(args, strict: @switchs)
 
     port = Keyword.get(opts, :port)
     path = Keyword.get(opts, :path, "priv/#{port}")
 
-    valid_port!(port)
+    Mix.Doumi.Port.valid_port!(port, "ex) mix doumi.port.setup --port python")
 
     File.mkdir_p!(path)
 
     case port do
       "python" ->
-        requirements_path = "#{path}/requirements.txt"
-        gitignore_path = "#{path}/.gitignore"
+        "#{path}/requirements.txt"
+        |> do_if_not_exist(&File.touch!(&1))
 
-        if !File.exists?(requirements_path) do
-          File.touch!(requirements_path)
-        end
-
-        if !File.exists?(gitignore_path) do
-          File.write!(gitignore_path, """
+        "#{path}/.gitignore"
+        |> do_if_not_exist(
+          &File.write!(&1, """
           lib
           __pycache__
           """)
-        end
+        )
 
       "ruby" ->
-        gemfile_path = "#{path}/Gemfile"
-        gemfile_lock_path = "#{path}/Gemfile.lock"
-        gitignore_path = "#{path}/.gitignore"
-
-        if !File.exists?(gemfile_path) do
-          File.write!(gemfile_path, """
+        "#{path}/Gemfile"
+        |> do_if_not_exist(
+          &File.write!(&1, """
           source 'https://rubygems.org'
 
           """)
-        end
+        )
 
-        if !File.exists?(gemfile_lock_path) do
-          File.touch!(gemfile_lock_path)
-        end
+        "#{path}/Gemfile.lock"
+        |> do_if_not_exist(&File.touch!(&1))
 
-        if !File.exists?(gitignore_path) do
-          File.write!(gitignore_path, """
+        "#{path}/.gitignore"
+        |> do_if_not_exist(
+          &File.write!(&1, """
           lib
           .bundle
           """)
-        end
+        )
     end
 
     :ok
   end
 
-  defp no_umbrella!() do
-    if Mix.Project.umbrella?() do
-      Mix.raise(
-        "Cannot run task doumi.port.setup from umbrella project root. " <>
-          "Change directory to one of the umbrella applications and try again"
-      )
-    end
-  end
-
-  defp valid_port!(args) do
-    if args not in ["python", "ruby"] do
-      Mix.raise("""
-      Port(python, ruby) should be provided.
-
-      ex) mix doumi.port.setup --port python
-      """)
+  defp do_if_not_exist(path, fun) when is_function(fun, 1) do
+    if !File.exists?(path) do
+      fun.(path)
     end
   end
 end
