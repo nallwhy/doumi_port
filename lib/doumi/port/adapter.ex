@@ -15,6 +15,7 @@ defmodule Doumi.Port.Adapter do
               opts :: list()
             ) :: term()
   @callback stop(instance :: instance()) :: :ok
+  @callback default_opts(otp_app :: atom()) :: keyword()
 
   defmacro __using__(opts) do
     erlport_module = Keyword.get(opts, :erlport)

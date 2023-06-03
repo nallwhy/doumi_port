@@ -30,13 +30,7 @@ https://github.com/dashbitco/nimble_pool#nimblepool
 ```elixir
 defmodule MyApp.PythonPool do
   use Doumi.Port.Pool,
-    adapter: {
-      Doumi.Port.Adapter.Python,
-      python_path: [
-        [:code.priv_dir(:my_app), "python"] |> Path.join(),
-        [:code.priv_dir(:my_app), "python", "lib"] |> Path.join()
-      ]
-    },
+    adapter: Doumi.Port.Adapter.Python,
     pool_size: 4
 end
 

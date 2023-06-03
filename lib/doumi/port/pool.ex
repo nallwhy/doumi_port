@@ -4,14 +4,7 @@ defmodule Doumi.Port.Pool do
   @default_pool_timeout :timer.seconds(5)
 
   def child_spec(opts) do
-    {adater, opts} = opts |> Keyword.pop!(:adapter)
-
-    {adapter_mod, _} =
-      adapter =
-      case adater do
-        {adater_mod, adater_opts} -> {adater_mod, adater_opts}
-        adater_mod -> {adater_mod, []}
-      end
+    {{adapter_mod, _} = adapter, opts} = opts |> Keyword.pop!(:adapter)
 
     {restart, opts} = opts |> Keyword.pop(:restart, :permanent)
     {shutdown, opts} = opts |> Keyword.pop(:shutdown, 5_000)
