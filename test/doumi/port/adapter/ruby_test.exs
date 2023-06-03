@@ -1,6 +1,6 @@
-defmodule Doumi.Port.RubyTest do
+defmodule Doumi.Port.Adapter.RubyTest do
   use ExUnit.Case
-  alias Doumi.Port.Ruby
+  alias Doumi.Port.Adapter.Ruby
 
   describe "start, call, stop" do
     test "without name" do

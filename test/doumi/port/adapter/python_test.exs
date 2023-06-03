@@ -1,6 +1,6 @@
-defmodule Doumi.Port.PythonTest do
+defmodule Doumi.Port.Adapter.PythonTest do
   use ExUnit.Case
-  alias Doumi.Port.Python
+  alias Doumi.Port.Adapter.Python
 
   describe "start, call, stop" do
     test "without name" do

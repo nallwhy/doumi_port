@@ -31,7 +31,7 @@ https://github.com/dashbitco/nimble_pool#nimblepool
 defmodule MyApp.PythonPool do
   use Doumi.Port.Pool,
     port: {
-      Doumi.Port.Python,
+      Doumi.Port.Adapter.Python,
       python_path: [
         [:code.priv_dir(:my_app), "python"] |> Path.join(),
         [:code.priv_dir(:my_app), "python", "lib"] |> Path.join()
@@ -117,6 +117,7 @@ end
 - [x] Support Ruby
 - [x] Support mix tasks that help setup Python in applications
 - [x] Support mix tasks that help setup Ruby in applications
+- [ ] Pool 이 위치를 알게하고, compile 시에 빌드를 하도록
 - [ ] Documentation
 - [ ] Write blog posts
 

@@ -1,6 +1,7 @@
 defmodule Doumi.Port.PoolTest do
   use ExUnit.Case
-  alias Doumi.Port.{Pool, Python}
+  alias Doumi.Port.Pool
+  alias Doumi.Port.Adapter.Python
 
   describe "command/4" do
     test "without port options" do
