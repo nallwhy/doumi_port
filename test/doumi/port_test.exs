@@ -1,9 +1,10 @@
 defmodule Doumi.PortTest do
   use ExUnit.Case, async: true
-  alias Doumi.Port.Adapter.Python
+  alias Doumi.Port.Adapter
 
   defmodule TestPool do
-    use Doumi.Port, port: {Python, python_path: ["#{__DIR__}/../support/python"]}
+    use Doumi.Port,
+      adapter: {Adapter.Python, python_path: ["#{__DIR__}/../support/python"]}
   end
 
   test "__using__/1" do

@@ -4,23 +4,23 @@ defmodule Doumi.Port.Pool do
   @default_pool_timeout :timer.seconds(5)
 
   def child_spec(opts) do
-    {port_opts, opts} = opts |> Keyword.pop!(:port)
+    {adater, opts} = opts |> Keyword.pop!(:adapter)
 
-    {port_module, _} =
-      port_opts =
-      case port_opts do
-        {port_module, port_opts} -> {port_module, port_opts}
-        port_module -> {port_module, []}
+    {adapter_mod, _} =
+      adapter =
+      case adater do
+        {adater_mod, adater_opts} -> {adater_mod, adater_opts}
+        adater_mod -> {adater_mod, []}
       end
 
     {restart, opts} = opts |> Keyword.pop(:restart, :permanent)
     {shutdown, opts} = opts |> Keyword.pop(:shutdown, 5_000)
 
-    opts = opts |> Keyword.put(:worker, {__MODULE__, port_opts})
-    opts = opts |> Keyword.put_new(:name, port_module)
+    opts = opts |> Keyword.put(:worker, {__MODULE__, adapter})
+    opts = opts |> Keyword.put_new(:name, adapter_mod)
 
     %{
-      id: port_module,
+      id: adapter_mod,
       start: {NimblePool, :start_link, [opts]},
       shutdown: shutdown,
       restart: restart
@@ -34,8 +34,8 @@ defmodule Doumi.Port.Pool do
     NimblePool.checkout!(
       pool_name,
       :checkout,
-      fn _from, %{port_module: port_module, port: port} ->
-        result = port_module.call(port, module, fun, args, opts)
+      fn _from, %{adapter_mod: adapter_mod, port: port} ->
+        result = adapter_mod.call(port, module, fun, args, opts)
 
         {result, :ok}
       end,
@@ -44,10 +44,10 @@ defmodule Doumi.Port.Pool do
   end
 
   @impl NimblePool
-  def init_worker({port_module, port_opts} = pool_state) do
-    {:ok, port} = port_module.start(port_opts)
+  def init_worker({adapter_mod, port_opts} = pool_state) do
+    {:ok, port} = adapter_mod.start(port_opts)
 
-    {:ok, %{port_module: port_module, port: port}, pool_state}
+    {:ok, %{adapter_mod: adapter_mod, port: port}, pool_state}
   end
 
   @impl NimblePool
@@ -61,8 +61,8 @@ defmodule Doumi.Port.Pool do
   end
 
   @impl NimblePool
-  def terminate_worker(_reason, %{port_module: port_module, port: port}, pool_state) do
-    port_module.stop(port)
+  def terminate_worker(_reason, %{adapter_mod: adapter_mod, port: port}, pool_state) do
+    adapter_mod.stop(port)
 
     {:ok, pool_state}
   end
