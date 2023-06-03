@@ -1,23 +1,6 @@
 defmodule Doumi.Port.Pool do
   @behaviour NimblePool
 
-  defmacro __using__(opts) do
-    quote do
-      def child_spec(opts) do
-        opts =
-          unquote(opts)
-          |> Keyword.merge(name: __MODULE__)
-          |> Keyword.merge(opts)
-
-        Doumi.Port.Pool.child_spec(opts)
-      end
-
-      def command(module, fun, args, opts \\ []) do
-        Doumi.Port.Pool.command(__MODULE__, module, fun, args, opts)
-      end
-    end
-  end
-
   @default_pool_timeout :timer.seconds(5)
 
   def child_spec(opts) do
