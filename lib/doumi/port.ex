@@ -7,6 +7,11 @@ defmodule Doumi.Port do
           |> Keyword.merge(name: __MODULE__)
           |> Keyword.merge(opts)
 
+        otp_app = Keyword.get(opts, :otp_app)
+        app_opts = Application.get_env(otp_app, __MODULE__, [])
+
+        opts = opts |> Keyword.merge(app_opts)
+
         {adapter, opts} = opts |> Keyword.pop!(:adapter)
 
         {adapter_mod, adapter_opts} =
