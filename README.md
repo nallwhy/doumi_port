@@ -29,7 +29,7 @@ https://github.com/dashbitco/nimble_pool#nimblepool
 
 ```elixir
 defmodule MyApp.PythonPool do
-  use Doumi.Port.Pool,
+  use Doumi.Port,
     adapter: Doumi.Port.Adapter.Python,
     pool_size: 4
 end
