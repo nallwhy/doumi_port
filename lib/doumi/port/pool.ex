@@ -3,6 +3,8 @@ defmodule Doumi.Port.Pool do
 
   @default_pool_timeout :timer.seconds(5)
 
+  require Logger
+
   def child_spec(opts) do
     {{adapter_mod, _} = adapter, opts} = opts |> Keyword.pop!(:adapter)
 
@@ -28,9 +30,15 @@ defmodule Doumi.Port.Pool do
       pool_name,
       :checkout,
       fn _from, %{adapter_mod: adapter_mod, port: port} ->
-        result = adapter_mod.call(port, module, fun, args, opts)
+        try do
+          result = adapter_mod.call(port, module, fun, args, opts)
 
-        {result, :ok}
+          {{:ok, result}, :ok}
+        rescue
+          e ->
+            Logger.warning(inspect(e))
+            {{:error, e}, :close}
+        end
       end,
       pool_timeout
     )
@@ -51,6 +59,11 @@ defmodule Doumi.Port.Pool do
   @impl NimblePool
   def handle_checkin(:ok, _from, worker_state, pool_state) do
     {:ok, worker_state, pool_state}
+  end
+
+  @impl NimblePool
+  def handle_checkin(:close, _from, _worker_state, pool_state) do
+    {:remove, :closed, pool_state}
   end
 
   @impl NimblePool

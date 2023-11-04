@@ -8,7 +8,7 @@ defmodule Doumi.Port.MixProject do
     [
       app: :doumi_port,
       version: @version,
-      elixir: "~> 1.7",
+      elixir: "~> 1.11",
       name: "Doumi.Port",
       description: "A helper library that makes it easier to use Python, Ruby in Elixir.",
       deps: deps(),

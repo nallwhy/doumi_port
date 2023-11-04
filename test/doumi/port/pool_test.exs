@@ -8,9 +8,22 @@ defmodule Doumi.Port.PoolTest do
       python_path = ["#{__DIR__}/../../support/python"]
       children = [{Pool, adapter: {Adapter.Python, python_path: python_path}, name: PythonPool}]
 
-      assert {:ok, _pid} = Supervisor.start_link(children, strategy: :one_for_one)
+      assert {:ok, pid} = Supervisor.start_link(children, strategy: :one_for_one)
 
-      assert Pool.command(PythonPool, :test, :hello, []) == "world"
+      assert {:ok, "world"} = Pool.command(PythonPool, :test, :hello, [])
+
+      Supervisor.stop(pid)
+    end
+
+    test "when an error happens" do
+      python_path = ["#{__DIR__}/../../support/python"]
+      children = [{Pool, adapter: {Adapter.Python, python_path: python_path}, name: PythonPool}]
+
+      assert {:ok, pid} = Supervisor.start_link(children, strategy: :one_for_one)
+
+      assert {:error, _} = Pool.command(PythonPool, :invalid, :invalid, [])
+
+      Supervisor.stop(pid)
     end
   end
 end

@@ -50,7 +50,9 @@ end
 
 defmodule MyApp.Native do
   def add(a, b) do
-    MyApp.PythonPool.command(:operator, :add, [a, b])
+    {:ok, result} = MyApp.PythonPool.command(:operator, :add, [a, b])
+
+    result
   end
 end
 ```

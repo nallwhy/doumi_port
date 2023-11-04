@@ -12,6 +12,6 @@ defmodule Doumi.PortTest do
 
     assert {:ok, _pid} = Supervisor.start_link(children, strategy: :one_for_one)
 
-    assert TestPool.command(:test, :hello, []) == "world"
+    assert TestPool.command(:test, :hello, []) == {:ok, "world"}
   end
 end
